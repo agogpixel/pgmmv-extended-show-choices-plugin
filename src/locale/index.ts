@@ -1,4 +1,4 @@
 import en from './en';
-import ja from './ja';
+//import ja from './ja';
 
-export default [en, ja];
+export default [en];
