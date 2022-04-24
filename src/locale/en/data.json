@@ -6,7 +6,7 @@
 
   "PARAMETER_0_NAME": "Image",
 
-  "ACTION_COMMAND_0_NAME": "Show Choices",
+  "ACTION_COMMAND_0_NAME": "Show Choices v2",
   "ACTION_COMMAND_0_DESCRIPTION": "Show choices on the screen.",
   "ACTION_COMMAND_0_PARAMETER_0_NAME": "Choice1:",
   "ACTION_COMMAND_0_PARAMETER_1_NAME": "Choice2:",
