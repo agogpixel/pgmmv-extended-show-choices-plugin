@@ -1,3 +1,3 @@
-# PGMMV Plugin Project Starter
+# Show Choices
 
-Welcome to the wonderful world of PGMMV plugin development!
+This plugin shows choies on the screen.
