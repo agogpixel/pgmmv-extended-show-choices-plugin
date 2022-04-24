@@ -7,6 +7,7 @@ on:
       - '**'
   workflow_dispatch:
 env:
+  GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
   DEMO_DISPATCH_URI: /repos/agogpixel/pgmmv-extended-show-choices-plugin-demo/actions/workflows/fetch-plugin-and-commit.yml/dispatches
   DEMO_DISPATCH_INPUT: '{"ref":"main","inputs":{"release-tag":"next"}}'
 jobs:
