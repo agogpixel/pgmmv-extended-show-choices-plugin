@@ -15,8 +15,8 @@
     "postbuild-dev": "npm run prepend-dist-license",
     "prepend-dist-license": "node scripts/prepend-dist-license.js",
     "clean": "shx rm -rf dist",
-    "lint": "eslint jest.config.js webpack.config.js src",
-    "lint-fix": "eslint --fix jest.config.js webpack.config.js src"
+    "lint": "eslint jest.config.js webpack.config.js src && prettier --check .",
+    "lint-fix": "eslint --fix jest.config.js webpack.config.js src && prettier --write ."
   },
   "devDependencies": {
     "@agogpixel/pgmmv-plugin-support": "~0.2.0",
