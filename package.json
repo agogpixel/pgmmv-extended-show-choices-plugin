@@ -6,10 +6,14 @@
   "scripts": {
     "start": "jest --watch",
     "test": "jest --coverage",
-    "prebuild": "shx rm -rf dist",
+    "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack --progress --color",
-    "prebuild-dev": "shx rm -rf dist",
+    "postbuild": "npm run prepend-dist-license",
+    "prebuild-dev": "npm run clean",
     "build-dev": "cross-env NODE_ENV=development webpack --progress --color",
+    "postbuild-dev": "npm run prepend-dist-license",
+    "prepend-dist-license": "node scripts/prepend-dist-license.js",
+    "clean": "shx rm -rf dist",
     "lint": "eslint jest.config.js webpack.config.js src",
     "lint-fix": "eslint --fix jest.config.js webpack.config.js src"
   },

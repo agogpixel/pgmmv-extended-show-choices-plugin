@@ -1,5 +1,6 @@
 import { CCNode } from '@agogpixel/pgmmv-ts/api';
-import { ShowChoicesParameterId } from 'action-commands';
+
+import { ShowChoicesParameterId } from '../action-commands';
 
 import { ChoicesLayerBackground } from './choices-layer-background.enum';
 import type { ChoicesLayerDataService } from './choices-layer-data-service.interface';

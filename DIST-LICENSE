@@ -1,0 +1,12 @@
+/**
+ * Extended version of the Show Choices plugin for Pixel Game Maker MV.
+ * Derived from original work by Keiji Agusa.
+ *
+ * Port to TypeScript, updates, & extensions by Tristan Bonsor <kidthales@agogpixel.com>.
+ * Copyright 2022 Tristan Bonsor - All Rights Reserved.
+ * 
+ * This file, and its originating project files, are released under the MIT license: https://github.com/agogpixel/pgmmv-extended-show-choices-plugin/blob/main/LICENSE
+ * 
+ * For more information, please see:
+ *  - Github Repository: https://github.com/agogpixel/pgmmv-extended-show-choices-plugin
+ */
