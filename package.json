@@ -20,7 +20,7 @@
     "clean": "shx rm -rf dist"
   },
   "devDependencies": {
-    "@agogpixel/pgmmv-plugin-support": "0.3.0--dev-build-1650790406",
+    "@agogpixel/pgmmv-plugin-support": "0.3.0--dev-build-1650793900",
     "@agogpixel/pgmmv-ts": "0.6.0--dev-build-1650783821",
     "@agogpixel/pgmmv-webpack-support": "~0.1.1",
     "@types/jest": "~27.4.1",
