@@ -1,0 +1,27 @@
+name: Build
+description: Build & archive artifacts.
+inputs:
+  build-artifacts-name:
+    description: Name under which to upload build artifacts.
+    required: false
+    default: dist
+  build-dev:
+    description: Build dev?
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: Build
+      run: |
+        if [[ '${{ inputs.build-dev }}' == 'true' ]]; then
+          npm run build-dev
+        else
+          npm run build
+        fi
+      shell: bash
+    - name: Archive Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.build-artifacts-name }}
+        path: dist

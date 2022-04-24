@@ -1,5 +1,8 @@
 # @agogpixel/pgmmv-extended-show-choices-plugin
 
+[![Build & Test](https://github.com/agogpixel/pgmmv-extended-show-choices-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/agogpixel/pgmmv-extended-show-choices-plugin/actions/workflows/build.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kidthales/8783260504aa23bb1c4dd36f0ba3be01/raw/pgmmv-extended-show-choices-plugin__heads_main.json)](https://agogpixel.github.io/pgmmv-extended-show-choices-plugin/coverage)
+
 Extended version of the Show Choices plugin for Pixel Game Maker MV.
 
 Derived from original work by Keiji Agusa.

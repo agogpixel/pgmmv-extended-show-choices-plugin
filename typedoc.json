@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src/create-plugin.ts",
+    "./src/action-commands",
+    "./src/choices-layer",
+    "./src/choices-layer/choices-layer-mode.enum.ts",
+    "./src/link-conditions",
+    "./src/parameters"
+  ],
+  "out": "dist/docs"
+}
