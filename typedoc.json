@@ -1,7 +1,8 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": [
-    "./src/create-plugin.ts",
+    "./src/pgmmv-entry.ts",
+    "./src/create-plugin.function.ts",
     "./src/action-commands",
     "./src/choices-layer",
     "./src/choices-layer/choices-layer-mode.enum.ts",
