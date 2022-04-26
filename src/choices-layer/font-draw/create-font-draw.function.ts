@@ -89,20 +89,24 @@ export function createFontDraw(layer: CCLayer, zIndex: number, fontData: AgtkFon
 
   function parseTag(message: string, head: number, size: number): ParsedTag {
     //ret: {head: <next head position>, tagName: <'S', 'C', or null>, param: <if 'S' then <size: int>. if 'C' then [<R: int>, <G: int>, <B: int>]. > }
-    const tag = message.substr(head, 3);
+    //const tag = message.substr(head, 3);
+    const tag = message.substring(head, head + 3);
 
     if (tag == '\\S[') {
       const index = message.indexOf(']', head + 3);
 
       if (index >= 0) {
-        const word = message.substr(head + 3, index - (head + 3));
+        //const word = message.substr(head + 3, index - (head + 3));
+        const word = message.substring(head + 3, index);
 
         if (word.length == 0) {
           size = letterHeight;
         } else if (word[0] == '+') {
-          size = Math.max(0, size + getInt(word.substr(1), 0));
+          //size = Math.max(0, size + getInt(word.substr(1), 0));
+          size = Math.max(0, size + getInt(word.substring(1), 0));
         } else if (word[0] == '-') {
-          size = Math.max(0, size - getInt(word.substr(1), 0));
+          //size = Math.max(0, size - getInt(word.substr(1), 0));
+          size = Math.max(0, size - getInt(word.substring(1), 0));
         } else {
           size = Math.max(0, getInt(word, letterHeight));
         }
@@ -115,17 +119,20 @@ export function createFontDraw(layer: CCLayer, zIndex: number, fontData: AgtkFon
       const index = message.indexOf(']', head + 3);
 
       if (index >= 0) {
-        const word = message.substr(head + 3, index - (head + 3));
+        //const word = message.substr(head + 3, index - (head + 3));
+        const word = message.substring(head + 3, index);
         let rgb: [number, number, number];
 
         if (word.length == 0) {
           rgb = [255, 255, 255];
         } else if (word[0] == '#') {
           if (word.length == 3 + 1) {
-            const v = parseInt(word.substr(1), 16);
+            //const v = parseInt(word.substr(1), 16);
+            const v = parseInt(word.substring(1), 16);
             rgb = [((v >> 8) & 0x0f) * 0x11, ((v >> 4) & 0x0f) * 0x11, ((v >> 0) & 0x0f) * 0x11];
           } else if (word.length == 6 + 1) {
-            const v = parseInt(word.substr(1), 16);
+            //const v = parseInt(word.substr(1), 16);
+            const v = parseInt(word.substring(1), 16);
             rgb = [(v >> 16) & 0xff, (v >> 8) & 0xff, (v >> 0) & 0xff];
           } else {
             rgb = [255, 255, 255];
@@ -170,7 +177,7 @@ export function createFontDraw(layer: CCLayer, zIndex: number, fontData: AgtkFon
         }
       }
       if (cx >= 0 && cy >= 0) {
-        const sprite = cc.Sprite.create(
+        const sprite = new cc.Sprite(
           fontImageTex,
           cc.rect(cx * letterWidth, cy * letterHeight, letterWidth, letterHeight)
         );
@@ -225,7 +232,8 @@ export function createFontDraw(layer: CCLayer, zIndex: number, fontData: AgtkFon
         break;
       }
 
-      if (text.substr(j, 2) == '\\\\') {
+      //if (text.substr(j, 2) == '\\\\') {
+      if (text.substring(j, j + 2) == '\\\\') {
         j += 2 - 1;
         putLetter('\\');
         continue;

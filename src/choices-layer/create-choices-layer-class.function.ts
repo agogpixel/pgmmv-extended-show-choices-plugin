@@ -18,13 +18,11 @@ export function createChoicesLayerClass() {
       this.objectId = objectId;
       this.instanceId = instanceId;
 
-      //this.bgType = obj.getValue(valueJson, 8);
       this.currentIndex = 0;
+      this.mode = ChoicesLayerMode.End;
+
       this.pressedKey = ~0;
       this.mousePressedKey = ~0;
-      //this.cancellable = obj.getValue(valueJson, 11) === 1;
-      //this.variableId = obj.getValue(valueJson, 10);
-      this.mode = ChoicesLayerMode.End;
 
       const bgImageId = service.getBgImageId();
 
@@ -38,7 +36,6 @@ export function createChoicesLayerClass() {
         return false;
       }
 
-      //this.bgImageTex = cc.TextureCache.getInstance().addImage(bgImageData.filename);
       this.bgImageTex = cc.textureCache.addImage(bgImageData.filename);
       this.bgImageTex.setAliasTexParameters();
 
@@ -408,7 +405,7 @@ export function createChoicesLayerClass() {
         y += 8 + this.choiceHeightList[i];
       }
 
-      this.highlight = cc.DrawNode.create();
+      this.highlight = new cc.DrawNode();
 
       this.highlight.drawRect(
         cc.p(-4, y - 4),
