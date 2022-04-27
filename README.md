@@ -9,9 +9,9 @@ Derived from original work by Keiji Agusa.
 
 <hr>
 
-> ⚠️ INITIAL DEVELOPMENT ⚠️
-
-I have no idea if this works yet - but it builds!.
+> ⚠️ ACTIVE DEVELOPMENT ⚠️
+>
+> Functionality will be inconsitent until specific [milestones](https://github.com/agogpixel/pgmmv-extended-show-choices-plugin/milestones) are achieved.
 
 ## Requirements
 

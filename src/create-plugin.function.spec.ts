@@ -1,4 +1,4 @@
-import { createPlugin } from './create-plugin';
+import { createPlugin } from './create-plugin.function';
 
 describe('createPlugin', () => {
   it('is a function', () => expect(typeof createPlugin).toBe('function'));

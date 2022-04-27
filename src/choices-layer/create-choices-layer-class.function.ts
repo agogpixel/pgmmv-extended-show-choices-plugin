@@ -1,6 +1,11 @@
+/**
+ * Exports {@link ChoicesLayerClass} factory functions.
+ *
+ * @module choices-layer/create-choices-layer-class.function
+ */
 import { CCNode } from '@agogpixel/pgmmv-ts/api';
 
-import { ShowChoicesParameterId } from '../action-commands';
+import { ShowChoicesParameterId } from '../action-commands/show-choices';
 
 import { ChoicesLayerBackground } from './choices-layer-background.enum';
 import type { ChoicesLayerDataService } from './choices-layer-data-service.interface';
@@ -9,8 +14,27 @@ import { ChoicesLayerPosition } from './choices-layer-position.enum';
 import type { ChoicesLayer, ChoicesLayerClass } from './choices-layer.interface';
 import { createFontDraw } from './font-draw';
 
+/**
+ * Creates the ChoicesLayer class constructor, which is extended from `cc.Layer`.
+ *
+ * @returns ChoicesLayer class constructor.
+ */
 export function createChoicesLayerClass() {
+  /**
+   * Implementation of our {@link ChoicesLayer} using Cocos class extension
+   * feature.
+   */
   return cc.Layer.extend<ChoicesLayerClass>({
+    /**
+     * Special method, used by Cocos, that contains our class constructor logic.
+     *
+     * @param service Choices layer data service.
+     * @param objectId The object ID of the object instance through which the
+     * ChoicesLayer is executing.
+     * @param instanceId The instance ID of the object instance through which the
+     * ChoicesLayer is executing.
+     * @returns True if instantiate was successful, false otherwise.
+     */
     ctor: function (this: ChoicesLayer, service: ChoicesLayerDataService, objectId: number, instanceId: number) {
       this._super();
 
@@ -146,6 +170,14 @@ export function createChoicesLayerClass() {
       return true;
     },
 
+    /**
+     * Update the display & behavior of the displaying choice layer.
+     *
+     * @returns Action command behavior signal. Usually, Block is returned when
+     * we are waiting for a choice to be made (hence this method will be called
+     * again on the next frame); Next is returned once a choice is made and the
+     * choices window has fully closed.
+     */
     update: function (this: ChoicesLayer) {
       if (!this.service.isShowing()) {
         return Agtk.constants.actionCommands.commandBehavior.CommandBehaviorNext;
@@ -286,6 +318,13 @@ export function createChoicesLayerClass() {
       return Agtk.constants.actionCommands.commandBehavior.CommandBehaviorBlock;
     },
 
+    /**
+     * Resolves current mouse position to a choice index (0-based indexing) when
+     * a click is detected.
+     *
+     * @returns Choice index clicked (0-based indexing) or -1 if no choice is
+     * resolved.
+     */
     getClickedIndex: function (this: ChoicesLayer) {
       const x = Agtk.variables.get(Agtk.variables.MouseXId).getValue();
       const y = this.service.getScreenHeight() - 1 - Agtk.variables.get(Agtk.variables.MouseYId).getValue();
@@ -307,11 +346,22 @@ export function createChoicesLayerClass() {
       return -1;
     },
 
+    /**
+     * Clean up this ChoicesLayer instance when the choices menu is exited.
+     */
     onExit: function (this: ChoicesLayer) {
       this._super();
       this.service.destroyChoices(false);
     },
 
+    /**
+     * Create & display the choices window.
+     *
+     * @param winX Horizontal position of top left corner of window.
+     * @param winY Vertical position of top left corner of window.
+     * @param winWidth Window width.
+     * @param winHeight Window height.
+     */
     createWindow: function (this: ChoicesLayer, winX: number, winY: number, winWidth: number, winHeight: number) {
       const bgType = this.service.getBgType();
       let oy = 0;
@@ -394,6 +444,10 @@ export function createChoicesLayerClass() {
       this.frameLayer.addChild(sprite);
     },
 
+    /**
+     * Update the display & behavior of the highlight layer within the
+     * displaying choice layer.
+     */
     updateHighlight: function (this: ChoicesLayer) {
       if (this.highlight !== null) {
         this.highlight.removeFromParent();
@@ -422,30 +476,66 @@ export function createChoicesLayerClass() {
       );
     },
 
+    /**
+     * Was the OK operation key just pressed?
+     *
+     * @returns True if OK operation key was pressed, false otherwise.
+     */
     isKeyOkJustPressed: function (this: ChoicesLayer) {
       return this.isKeyJustPressed(Agtk.constants.controllers.OperationKeyOk);
     },
 
+    /**
+     * Was the CANCEL operation key just pressed?
+     *
+     * @returns True if CANCEL operation key was pressed, false otherwise.
+     */
     isKeyCancelJustPressed: function (this: ChoicesLayer) {
       return this.isKeyJustPressed(Agtk.constants.controllers.OperationKeyCancel);
     },
 
+    /**
+     * Was the UP operation key just pressed?
+     *
+     * @returns True if UP operation key was pressed, false otherwise.
+     */
     isKeyUpJustPressed: function (this: ChoicesLayer) {
       return this.isKeyJustPressed(Agtk.constants.controllers.OperationKeyUp);
     },
 
+    /**
+     * Was the DOWN operation key just pressed?
+     *
+     * @returns True if DOWN operation key was pressed, false otherwise.
+     */
     isKeyDownJustPressed: function (this: ChoicesLayer) {
       return this.isKeyJustPressed(Agtk.constants.controllers.OperationKeyDown);
     },
 
+    /**
+     * Was the left mouse button just pressed?
+     *
+     * @returns True if left mouse button was pressed, false otherwise.
+     */
     isMouseLeftClickJustPressed: function (this: ChoicesLayer) {
       return this.isMouseJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_LeftClick);
     },
 
+    /**
+     * Was the right mouse button just pressed?
+     *
+     * @returns True if right mouse button was pressed, false otherwise.
+     */
     isMouseRightClickJustPressed: function (this: ChoicesLayer) {
       return this.isMouseJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_RightClick);
     },
 
+    /**
+     * Is specified operation key pressed?
+     *
+     * @param keyId Operation key ID.
+     * @returns True if operation key is pressed, false otherwise.
+     */
     isKeyPressed: function (this: ChoicesLayer, keyId: number) {
       for (let i = 0; i <= Agtk.controllers.MaxControllerId; i++) {
         if (Agtk.controllers.getOperationKeyPressed(i, keyId)) {
@@ -456,6 +546,12 @@ export function createChoicesLayerClass() {
       return false;
     },
 
+    /**
+     * Was the specified operation key just pressed?
+     *
+     * @param keyId Operation key ID.
+     * @returns True if operation key was pressed, false otherwise.
+     */
     isKeyJustPressed: function (this: ChoicesLayer, keyId: number) {
       const pressed = this.isKeyPressed(keyId);
 
@@ -469,6 +565,12 @@ export function createChoicesLayerClass() {
       return false;
     },
 
+    /**
+     * Is specified mouse button pressed?
+     *
+     * @param keyCode Mouse key code.
+     * @returns True if mouse button is pressed, false otherwise.
+     */
     isMousePressed: function (this: ChoicesLayer, keyCode: number) {
       if (Agtk.controllers.getKeyValue(0, keyCode) != 0) {
         return true;
@@ -477,6 +579,12 @@ export function createChoicesLayerClass() {
       return false;
     },
 
+    /**
+     * Was the specified mouse button just pressed?
+     *
+     * @param keyCode Mouse key code.
+     * @returns True if mouse button was pressed, false otherwise.
+     */
     isMouseJustPressed: function (this: ChoicesLayer, keyCode: number) {
       const pressed = this.isMousePressed(keyCode);
 
@@ -490,6 +598,12 @@ export function createChoicesLayerClass() {
       return false;
     },
 
+    /**
+     * Set the opacity of all children attached to specified Cocos node.
+     *
+     * @param node Cocos node with children we will iterate.
+     * @param alpha Alpha value to apply to all children.
+     */
     setChildrenOpacity: function (this: ChoicesLayer, node: CCNode, alpha: number) {
       const children = node.children;
 

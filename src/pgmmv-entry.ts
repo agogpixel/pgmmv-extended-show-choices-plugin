@@ -1,4 +1,10 @@
-import { createPlugin } from './create-plugin';
+/**
+ * Special entry point for webpack that ensures IIFE compatability is maintained
+ * when importing the built plugin into PGMMV.
+ *
+ * @module
+ */
+import { createPlugin } from './create-plugin.function';
 
 const plugin = createPlugin();
 

@@ -1,3 +1,8 @@
+/**
+ * Exports action command configurations.
+ *
+ * @module action-commands/action-commands.config
+ */
 import { AgtkPluginUiParameterType, AgtkPluginActionCommand } from '@agogpixel/pgmmv-ts/api';
 
 import { ActionCommandId } from './action-command-id.enum';
@@ -8,20 +13,53 @@ import {
   ShowChoicesPositionParameterId
 } from './show-choices';
 
+/**
+ * Common default values for the 'Show Choices' action command configuration.
+ */
 const showChoicesDefaults = {
+  /**
+   * Default value for ID based parameters.
+   */
   idParameter: -1,
+
+  /**
+   * Default value for embedded parameter names.
+   */
   embeddedName: '',
+
+  /**
+   * Default value for embedded parameter references.
+   */
   embeddedReference: 'text',
+
+  /**
+   * Default value for embedded parameter UI width.
+   */
   embeddedWidth: 256,
+
+  /**
+   * Default value for embedded parameter UI height.
+   */
   embeddedHeight: 48
 };
 
+/**
+ * Action command configurations.
+ */
 export const actionCommands: AgtkPluginActionCommand[] = [
+  /**
+   * Show Choices action command configuration.
+   */
   {
-    // Show Choices.
     id: ActionCommandId.ShowChoices,
     name: 'loca(ACTION_COMMAND_0_NAME)',
     description: 'loca(ACTION_COMMAND_0_DESCRIPTION)',
+    /**
+     * - Fixed number of choices.
+     * - Each choice has an editable embedded text reference.
+     * - Font & background inputs.
+     * - Variable storage & cancel behavior inputs.
+     */
     parameter: [
       // Configurable choice 'slots'.
       {
