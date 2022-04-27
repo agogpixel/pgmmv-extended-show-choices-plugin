@@ -1,14 +1,28 @@
+/**
+ * Exports link condition configurations.
+ *
+ * @module link-conditions/link-conditions.config
+ */
 import { AgtkPluginUiParameterType, AgtkPluginLinkCondition } from '@agogpixel/pgmmv-ts/api';
 
 import { ChoiceSelectedConditionParameterId, ChoiceSelectedParamaterId } from './choice-selected';
 import { LinkConditionId } from './link-condition-id.enum';
 
+/**
+ * Link condition configurations.
+ */
 export const linkConditions: AgtkPluginLinkCondition[] = [
+  /**
+   * Choice Selected link condition configuration.
+   */
   {
     id: LinkConditionId.ChoiceSelected,
     name: 'loca(LINK_CONDITION_0_NAME)',
     description: 'loca(LINK_CONDITION_0_DESCRIPTION)',
     parameter: [
+      /**
+       * Supports up to 6 choice 'slots' plus a cancel option.
+       */
       {
         id: ChoiceSelectedParamaterId.Condition,
         name: 'loca(LINK_CONDITION_0_PARAMETER_0_NAME)',

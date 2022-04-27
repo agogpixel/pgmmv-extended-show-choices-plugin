@@ -4,9 +4,11 @@
     "./src/pgmmv-entry.ts",
     "./src/create-plugin.function.ts",
     "./src/action-commands",
+    "./src/action-commands/show-choices",
     "./src/choices-layer",
-    "./src/choices-layer/choices-layer-mode.enum.ts",
+    "./src/choices-layer/font-draw",
     "./src/link-conditions",
+    "./src/link-conditions/choice-selected",
     "./src/parameters"
   ],
   "out": "dist/docs"

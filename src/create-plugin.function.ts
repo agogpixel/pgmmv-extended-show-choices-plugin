@@ -11,12 +11,8 @@ import {
   JsonValue
 } from '@agogpixel/pgmmv-ts/api';
 
-import {
-  ActionCommandId,
-  actionCommands,
-  ShowChoicesCancelParameterId,
-  ShowChoicesParameterId
-} from './action-commands';
+import { ActionCommandId, actionCommands } from './action-commands';
+import { ShowChoicesCancelParameterId, ShowChoicesParameterId } from './action-commands/show-choices';
 import {
   ChoicesLayer,
   ChoicesLayerBackground,
@@ -25,7 +21,8 @@ import {
   ChoicesLayerPosition,
   createChoicesLayerClass
 } from './choices-layer';
-import { ChoiceSelectedConditionParameterId, LinkConditionId, linkConditions } from './link-conditions';
+import { LinkConditionId, linkConditions } from './link-conditions';
+import { ChoiceSelectedConditionParameterId } from './link-conditions/choice-selected';
 import localizations from './locale';
 import { ParameterId, parameters } from './parameters';
 
