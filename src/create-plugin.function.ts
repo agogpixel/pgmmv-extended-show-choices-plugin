@@ -8,6 +8,7 @@ import {
   AgtkActionCommandPlugin,
   AgtkLinkConditionPlugin,
   AgtkPluginInfoCategory,
+  AgtkPluginParameterValue,
   JsonValue
 } from '@agogpixel/pgmmv-ts/api';
 
@@ -44,10 +45,10 @@ type InternalData = JsonValue;
  * Helper type for individual parameters listed in the data that is provided to
  * {@link AgtkPlugin.setParamValue}.
  */
-type Parameter = {
+/*type Parameter = {
   id: number;
   value: JsonValue;
-};
+};*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // Private Static Properties
@@ -89,6 +90,9 @@ const linkConditionIndexMap = {
  */
 let ChoicesLayer: ChoicesLayerClass;
 
+const noChoiceMade = -2;
+const cancelChoiceMade = -1;
+
 /**
  * Creates a plugin instance.
  *
@@ -120,7 +124,7 @@ export function createPlugin() {
    *
    * @private
    */
-  let paramValue: Parameter[] = [];
+  let paramValue: AgtkPluginParameterValue[] = [];
 
   /**
    * Maps concatenation of a given objectId/instanceId pair to its
@@ -142,41 +146,6 @@ export function createPlugin() {
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Helper method for plugin action commands. Adds missing parameters with
-   * default values to the provided data.
-   *
-   * @param actionCommandIndex The index of a given action command.
-   * @param valueJson Action command data that is set in & provided by the PGMMV
-   * editor or runtime.
-   * @returns Action command data with missing parameters resolved.
-   * @private
-   */
-  function completeValueJson(actionCommandIndex: number, valueJson: Parameter[]) {
-    const vj = self.getInfo(AgtkPluginInfoCategory.ActionCommand)[actionCommandIndex];
-    const parameter = vj.parameter;
-
-    if (!!parameter) {
-      for (let i = 0; i < parameter.length; i++) {
-        const id = parameter[i].id;
-        let found = false;
-
-        for (let j = 0; j < valueJson.length; j++) {
-          if (valueJson[j].id == id) {
-            found = true;
-            break;
-          }
-        }
-
-        if (!found) {
-          valueJson.push({ id: id, value: parameter[i].defaultValue as JsonValue });
-        }
-      }
-    }
-
-    return valueJson;
-  }
-
-  /**
    * Helper method for creating & showing choices for a given 'Show Choices'
    * action command.
    *
@@ -190,7 +159,7 @@ export function createPlugin() {
    * signal but Next can be returned if there are errors encountered.
    * @private
    */
-  function createChoices(valueJson: Parameter[], objectId: number, instanceId: number) {
+  function createChoices(valueJson: AgtkPluginParameterValue[], objectId: number, instanceId: number) {
     // We will show the choices on our implicit menu/ui/hud layer provided by PGMMV runtime.
     const agtkLayer = Agtk.sceneInstances.getCurrent().getMenuLayerById(Agtk.constants.systemLayers.HudLayerId);
 
@@ -207,7 +176,7 @@ export function createPlugin() {
 
     // Update plugin state.
     showing = true;
-    setSelectedInfo(choicesLayer.objectId, choicesLayer.instanceId, -2, choicesLayer.service.getVariableId());
+    setSelectedInfo(choicesLayer.objectId, choicesLayer.instanceId, noChoiceMade, choicesLayer.service.getVariableId());
 
     // Block further action command processing on the object instance until
     // a choice is made.
@@ -223,19 +192,22 @@ export function createPlugin() {
    * 'Show Choices' action command.
    * @private
    */
-  function createChoicesLayerDataService(valueJson: Parameter[]): ChoicesLayerDataService {
+  function createChoicesLayerDataService(valueJson: AgtkPluginParameterValue[]): ChoicesLayerDataService {
     const winSize = cc.director.getWinSize();
 
     return {
       destroyChoices,
       getBgImageId: function () {
-        return getValue(paramValue, ParameterId.Image) as number;
+        return internalApi.getParameterValueById(paramValue, ParameterId.Image) as number;
       },
       getBgType: function () {
-        return getValue(valueJson, ShowChoicesParameterId.Background) as ChoicesLayerBackground;
+        return internalApi.getParameterValueById(
+          valueJson,
+          ShowChoicesParameterId.Background
+        ) as ChoicesLayerBackground;
       },
       getFontId: function () {
-        return getValue(valueJson, ShowChoicesParameterId.Font) as number;
+        return internalApi.getParameterValueById(valueJson, ShowChoicesParameterId.Font) as number;
       },
       getLocale: function () {
         return internalApi.localization.getLocale();
@@ -244,7 +216,7 @@ export function createPlugin() {
         return ShowChoicesParameterId.Choice6;
       },
       getPosition: function () {
-        return getValue(valueJson, ShowChoicesParameterId.Position) as ChoicesLayerPosition;
+        return internalApi.getParameterValueById(valueJson, ShowChoicesParameterId.Position) as ChoicesLayerPosition;
       },
       getScreenHeight: function () {
         return winSize.height;
@@ -253,13 +225,16 @@ export function createPlugin() {
         return winSize.width;
       },
       getTextId: function (choiceIndex) {
-        return getValue(valueJson, choiceIndex) as number;
+        return internalApi.getParameterValueById(valueJson, choiceIndex) as number;
       },
       getVariableId: function () {
-        return getValue(valueJson, ShowChoicesParameterId.Variable) as number;
+        return internalApi.getParameterValueById(valueJson, ShowChoicesParameterId.Variable) as number;
       },
       isCancellable: function () {
-        return getValue(valueJson, ShowChoicesParameterId.Cancel) === ShowChoicesCancelParameterId.Enabled;
+        return (
+          internalApi.getParameterValueById(valueJson, ShowChoicesParameterId.Cancel) ===
+          ShowChoicesCancelParameterId.Enabled
+        );
       },
       isShowing: function () {
         return showing;
@@ -304,12 +279,17 @@ export function createPlugin() {
    * occured.
    * @private
    */
-  function execShowChoices(actionCommandIndex: number, parameter: Parameter[], objectId: number, instanceId: number) {
+  function execShowChoices(
+    actionCommandIndex: number,
+    parameter: AgtkPluginParameterValue[],
+    objectId: number,
+    instanceId: number
+  ) {
     if (showing) {
       if (choicesLayer.objectId !== objectId || choicesLayer.instanceId !== instanceId) {
         // Show Choices is requested by another instance.
         // Cancel the current choices.
-        const result = choicesLayer.service.isCancellable() ? -1 : choicesLayer.currentIndex;
+        const result = choicesLayer.service.isCancellable() ? cancelChoiceMade : choicesLayer.currentIndex;
         setSelectedInfo(choicesLayer.objectId, choicesLayer.instanceId, result, choicesLayer.service.getVariableId());
         destroyChoices(true);
       }
@@ -319,26 +299,13 @@ export function createPlugin() {
       return choicesLayer.update();
     }
 
-    const valueJson = completeValueJson(actionCommandIndex, parameter);
+    const valueJson = internalApi.populateParameterDefaults(
+      AgtkPluginInfoCategory.ActionCommand,
+      actionCommandIndex,
+      parameter
+    );
+
     return createChoices(valueJson, objectId, instanceId);
-  }
-
-  /**
-   * Helper method for retrieving parameter data values by parameter ID.
-   *
-   * @param valueJson The parameters in which we are searching.
-   * @param id The ID of the parameter that contains the value we want.
-   * @returns The resolved value if found, null otherwise.
-   * @private
-   */
-  function getValue(valueJson: Parameter[], id: number) {
-    for (let i = 0; i < valueJson.length; i++) {
-      if (valueJson[i].id === id) {
-        return valueJson[i].value;
-      }
-    }
-
-    return null;
   }
 
   /**
@@ -349,7 +316,7 @@ export function createPlugin() {
    * 'Show Choices' action command is executing.
    * @param instanceId The instance ID of the object instance through which the
    * 'Show Choices' action command is executing.
-   * @param index Selected choice index (1-based indexing).
+   * @param index Selected choice index (0-based indexing).
    * @param variableId The ID of the variable in which we will store the choice
    * index (1-based indexing).
    * @private
@@ -480,7 +447,7 @@ export function createPlugin() {
    * @public
    */
   self.execLinkCondition = function (linkConditionIndex, parameter, objectId, instanceId) {
-    let info = -2;
+    let info = noChoiceMade;
     const key = `${objectId}-${instanceId}`;
 
     if (key in selectedInfo) {
@@ -502,7 +469,7 @@ export function createPlugin() {
 
       return false;
     } else if (target === ChoiceSelectedConditionParameterId.Cancel) {
-      if (info === -1) {
+      if (info === cancelChoiceMade) {
         return true;
       }
 
