@@ -9,7 +9,9 @@
     "./src/choices-layer/font-draw",
     "./src/link-conditions",
     "./src/link-conditions/choice-selected",
-    "./src/parameters"
+    "./src/internal-data.type.ts",
+    "./src/parameters",
+    "./src/plugin-protected-api.interface.ts"
   ],
   "out": "dist/docs"
 }
