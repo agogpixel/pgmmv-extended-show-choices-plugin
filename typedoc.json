@@ -5,6 +5,7 @@
     "./src/create-plugin.function.ts",
     "./src/action-commands",
     "./src/action-commands/show-choices",
+    "./src/choices.const.ts",
     "./src/choices-layer",
     "./src/choices-layer/font-draw",
     "./src/link-conditions",

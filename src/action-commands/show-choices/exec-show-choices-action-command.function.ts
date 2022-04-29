@@ -6,16 +6,13 @@
 import type { AgtkPluginParameterValue } from '@agogpixel/pgmmv-ts/api';
 import { AgtkPluginInfoCategory } from '@agogpixel/pgmmv-ts/api';
 
+import { cancelChoiceMade, noChoiceMade } from '../../choices.const';
 import type { ChoicesLayerBackground, ChoicesLayerDataService, ChoicesLayerPosition } from '../../choices-layer';
 import { ParameterId } from '../../parameters';
 import type { PluginProtectedApi } from '../../plugin-protected-api.interface';
 
 import { ShowChoicesParameterId } from './show-choices-parameter-id.enum';
 import { ShowChoicesCancelParameterId } from './show-choices-cancel-parameter-id.enum';
-
-// TODO: move to shared...
-const cancelChoiceMade = -1;
-const noChoiceMade = -2;
 
 /**
  * Begin execution of the 'Show Choices' action command 'business' logic.
