@@ -1,7 +1,7 @@
 /**
  * Exports choice constant values.
  *
- * @module
+ * @module choices/choices.const
  */
 
 /**
