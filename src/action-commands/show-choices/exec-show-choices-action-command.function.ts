@@ -6,7 +6,7 @@
 import type { AgtkPluginParameterValue } from '@agogpixel/pgmmv-ts/api';
 import { AgtkPluginInfoCategory } from '@agogpixel/pgmmv-ts/api';
 
-import { cancelChoiceMade, noChoiceMade } from '../../choices';
+import { cancelChoiceMade, noChoiceMade } from '../../utils';
 import type { ChoicesLayerBackground, ChoicesLayerDataService, ChoicesLayerPosition } from '../../choices-layer';
 import { ParameterId } from '../../parameters';
 import type { PluginProtectedApi } from '../../plugin-protected-api.interface';

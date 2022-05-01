@@ -1,5 +1,4 @@
-import { createChoicesService } from '../../../choices';
-import { parseTextTag, TextTagName } from '../../../text-tag';
+import { createChoicesService, parseTextTag, TextTagName } from '../../../utils';
 
 import type { ShowChoicesLetterData } from './show-choices-letter-data.interface';
 import type { ShowChoicesServiceConfig } from './show-choices-service-config.interface';

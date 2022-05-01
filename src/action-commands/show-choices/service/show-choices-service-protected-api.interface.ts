@@ -1,6 +1,6 @@
 import type { CCColor, CCTexture2D } from '@agogpixel/pgmmv-ts/api';
 
-import type { ChoicesServiceProtectedApi } from '../../../choices';
+import type { ChoicesServiceProtectedApi } from '../../../utils';
 
 export interface ShowChoicesServiceProtectedApi extends ChoicesServiceProtectedApi {
   background: BackgroundData;

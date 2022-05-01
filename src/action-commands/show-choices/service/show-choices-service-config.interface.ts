@@ -1,4 +1,4 @@
-import type { ChoicesServiceConfig } from '../../../choices';
+import type { ChoicesServiceConfig } from '../../../utils';
 
 export interface ShowChoicesServiceConfig extends ChoicesServiceConfig {
   backgroundBorderColor?: [number, number, number, number];

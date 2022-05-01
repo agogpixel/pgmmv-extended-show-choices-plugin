@@ -1,5 +1,6 @@
 import { CCNode, CCSize } from '@agogpixel/pgmmv-ts/api';
-import type { InputService } from '../../../../input';
+
+import type { InputService } from '../../../../utils';
 
 import type { ShowChoicesService } from '../../service';
 

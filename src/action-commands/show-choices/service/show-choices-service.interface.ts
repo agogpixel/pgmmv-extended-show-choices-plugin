@@ -1,6 +1,6 @@
 import type { CCColor, CCTexture2D } from '@agogpixel/pgmmv-ts/api';
 
-import type { ChoicesService } from '../../../choices';
+import type { ChoicesService } from '../../../utils';
 
 import type { ShowChoicesLetterData } from './show-choices-letter-data.interface';
 
