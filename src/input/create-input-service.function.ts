@@ -3,6 +3,8 @@
  *
  * @module input/create-input-service.function
  */
+import type { InputServiceConfig } from './input-service-config.interface';
+import type { InputServiceProtectedApi } from './input-service-protected-api.interface';
 import type { InputService } from './input-service.interface';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,98 +45,77 @@ function isMousePressed(keyCode: number) {
   return false;
 }
 
-export function createInputService(isCancellable?: boolean): InputService {
-  //////////////////////////////////////////////////////////////////////////////
-  // Private Properties
-  //////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * Currently pressed operation key.
-   *
-   * @private
-   */
-  let pressedKey = ~0;
-
-  /**
-   * Currently pressed mouse operation key.
-   *
-   * @private
-   */
-  let mousePressedKey = ~0;
+export function createInputService(config: InputServiceConfig, internal?: InputServiceProtectedApi): InputService {
+  const self = {} as InputService;
+  const internalApi = internal || ({} as InputServiceProtectedApi);
 
   //////////////////////////////////////////////////////////////////////////////
-  // Private Methods
+  // Protected API
   //////////////////////////////////////////////////////////////////////////////
 
-  /**
-   * Was the specified operation key just pressed?
-   *
-   * @param keyId Operation key ID.
-   * @returns True if operation key was pressed, false otherwise.
-   */
-  function isKeyJustPressed(keyId: number) {
+  internalApi.isCancellable = !!config.isCancellable;
+
+  internalApi.pressedMouseKey = ~0;
+
+  internalApi.pressedOperationKey = ~0;
+
+  internalApi.isOperationKeyJustPressed = function (keyId: number) {
     const pressed = isKeyPressed(keyId);
 
-    if (!(pressedKey & (1 << keyId)) && pressed) {
-      pressedKey = (pressedKey & ~(1 << keyId)) | (pressed ? 1 << keyId : 0);
+    if (!(internalApi.pressedOperationKey & (1 << keyId)) && pressed) {
+      internalApi.pressedOperationKey = (internalApi.pressedOperationKey & ~(1 << keyId)) | (pressed ? 1 << keyId : 0);
       return true;
     }
 
-    pressedKey = (pressedKey & ~(1 << keyId)) | (pressed ? 1 << keyId : 0);
+    internalApi.pressedOperationKey = (internalApi.pressedOperationKey & ~(1 << keyId)) | (pressed ? 1 << keyId : 0);
 
     return false;
-  }
+  };
 
-  /**
-   * Was the specified mouse button just pressed?
-   *
-   * @param keyCode Mouse key code.
-   * @returns True if mouse button was pressed, false otherwise.
-   */
-  function isMouseJustPressed(keyCode: number) {
+  internalApi.isMouseKeyJustPressed = function (keyCode: number) {
     const pressed = isMousePressed(keyCode);
 
-    if (!(mousePressedKey & (1 << keyCode)) && pressed) {
-      mousePressedKey = (mousePressedKey & ~(1 << keyCode)) | (pressed ? 1 << keyCode : 0);
+    if (!(internalApi.pressedMouseKey & (1 << keyCode)) && pressed) {
+      internalApi.pressedMouseKey = (internalApi.pressedMouseKey & ~(1 << keyCode)) | (pressed ? 1 << keyCode : 0);
       return true;
     }
 
-    mousePressedKey = (mousePressedKey & ~(1 << keyCode)) | (pressed ? 1 << keyCode : 0);
+    internalApi.pressedMouseKey = (internalApi.pressedMouseKey & ~(1 << keyCode)) | (pressed ? 1 << keyCode : 0);
 
     return false;
-  }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // Public API
   //////////////////////////////////////////////////////////////////////////////
 
-  return {
-    isCancellable: function () {
-      return !!isCancellable;
-    },
-
-    isKeyOkJustPressed: function () {
-      return isKeyJustPressed(Agtk.constants.controllers.OperationKeyOk);
-    },
-
-    isKeyCancelJustPressed: function () {
-      return isKeyJustPressed(Agtk.constants.controllers.OperationKeyCancel);
-    },
-
-    isKeyUpJustPressed: function () {
-      return isKeyJustPressed(Agtk.constants.controllers.OperationKeyUp);
-    },
-
-    isKeyDownJustPressed: function () {
-      return isKeyJustPressed(Agtk.constants.controllers.OperationKeyDown);
-    },
-
-    isMouseLeftClickJustPressed: function () {
-      return isMouseJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_LeftClick);
-    },
-
-    isMouseRightClickJustPressed: function () {
-      return isMouseJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_RightClick);
-    }
+  self.isCancellable = function () {
+    return internalApi.isCancellable;
   };
+
+  self.isKeyOkJustPressed = function () {
+    return internalApi.isOperationKeyJustPressed(Agtk.constants.controllers.OperationKeyOk);
+  };
+
+  self.isKeyCancelJustPressed = function () {
+    return internalApi.isOperationKeyJustPressed(Agtk.constants.controllers.OperationKeyCancel);
+  };
+
+  self.isKeyUpJustPressed = function () {
+    return internalApi.isOperationKeyJustPressed(Agtk.constants.controllers.OperationKeyUp);
+  };
+
+  self.isKeyDownJustPressed = function () {
+    return internalApi.isOperationKeyJustPressed(Agtk.constants.controllers.OperationKeyDown);
+  };
+
+  self.isMouseLeftClickJustPressed = function () {
+    return internalApi.isMouseKeyJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_LeftClick);
+  };
+
+  self.isMouseRightClickJustPressed = function () {
+    return internalApi.isMouseKeyJustPressed(Agtk.constants.controllers.ReservedKeyCodePc_RightClick);
+  };
+
+  return self;
 }

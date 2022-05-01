@@ -1,7 +1,7 @@
 /**
  * Exports 'Show Choices' action command background parameter ID enumerations.
  *
- * @module action-commands/show-choices/show-choices-background-paramerter-id.enum
+ * @module action-commands/show-choices/parameters/show-choices-background-paramerter-id.enum
  */
 
 /**

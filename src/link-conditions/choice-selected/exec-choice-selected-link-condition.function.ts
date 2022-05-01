@@ -5,7 +5,7 @@
  */
 import { AgtkPluginInfoCategory, AgtkPluginParameterValue } from '@agogpixel/pgmmv-ts/api';
 
-import { cancelChoiceMade, noChoiceMade } from '../../choices.const';
+import { cancelChoiceMade, noChoiceMade } from '../../choices';
 import { PluginProtectedApi } from '../../plugin-protected-api.interface';
 
 import { ChoiceSelectedConditionParameterId } from './choice-selected-condition-parameter-id.enum';

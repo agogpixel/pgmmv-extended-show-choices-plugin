@@ -1,7 +1,7 @@
 /**
  * Exports 'Show Choices' action command parameter ID enumerations.
  *
- * @module action-commands/show-choices/show-choices-parameter-id.enum
+ * @module action-commands/show-choices/parameters/show-choices-parameter-id.enum
  */
 
 /**

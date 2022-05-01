@@ -6,13 +6,12 @@
 import type { AgtkPluginParameterValue } from '@agogpixel/pgmmv-ts/api';
 import { AgtkPluginInfoCategory } from '@agogpixel/pgmmv-ts/api';
 
-import { cancelChoiceMade, noChoiceMade } from '../../choices.const';
+import { cancelChoiceMade, noChoiceMade } from '../../choices';
 import type { ChoicesLayerBackground, ChoicesLayerDataService, ChoicesLayerPosition } from '../../choices-layer';
 import { ParameterId } from '../../parameters';
 import type { PluginProtectedApi } from '../../plugin-protected-api.interface';
 
-import { ShowChoicesParameterId } from './show-choices-parameter-id.enum';
-import { ShowChoicesCancelParameterId } from './show-choices-cancel-parameter-id.enum';
+import { ShowChoicesCancelParameterId, ShowChoicesParameterId } from './parameters';
 
 /**
  * Begin execution of the 'Show Choices' action command 'business' logic.

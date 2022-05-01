@@ -5,18 +5,26 @@
  */
 
 /**
- * Exposes simple choices API.
+ * Exposes a simple choices API.
  */
 export interface ChoicesService {
+  /**
+   * Get the 'cancel current choices' value.
+   */
+  getCancelValue(): number;
+
+  /**
+   * Get the default choice value.
+   */
+  getDefaultChoice(): number;
+
   /**
    * Get the maximum number of choices available.
    */
   getMaxChoices(): number;
 
   /**
-   * Set a choice represented by specified index.
-   *
-   * @param index Choice index.
+   * Get the 'no choice made' value.
    */
-  setChoice(index: number): void;
+  getNoChoiceMadeValue(): number;
 }
