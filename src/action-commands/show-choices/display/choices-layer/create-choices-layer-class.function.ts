@@ -15,6 +15,8 @@ import type { ChoicesLayer } from './choices-layer.interface';
 export function createChoicesLayerClass() {
   return cc.Layer.extend<ChoicesLayerClass>({
     ctor: function (this: ChoicesLayer, inputService: InputService, showChoicesService: ShowChoicesService) {
+      this._super();
+
       this.inputService = inputService;
       this.showChoicesService = showChoicesService;
 
@@ -22,10 +24,10 @@ export function createChoicesLayerClass() {
 
       this.choiceHeightList = [];
 
-      const textDimensions = new cc.Size(0, 0);
+      const textDimensions = cc.size(0, 0);
       renderChoicesText.call(this, textDimensions);
 
-      this.windowDimensions = new cc.Size(textDimensions.width + 16, textDimensions.height + 16);
+      this.windowDimensions = cc.size(textDimensions.width + 16, textDimensions.height + 16);
 
       if (showChoicesService.getBackgroundDisplayType() !== ShowChoicesBackgroundDisplayType.None) {
         createWindow.call(this, 0, 0, this.windowDimensions.width, this.windowDimensions.height);

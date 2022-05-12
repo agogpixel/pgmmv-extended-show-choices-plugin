@@ -103,8 +103,9 @@ function createChoices(
   }
 
   // Create & display the choices.
+  const services = createServices(internalApi, valueJson);
   internalApi.showChoicesContext = {
-    display: new internalApi.ChoicesLayer(...createServices(internalApi, valueJson)),
+    display: new internalApi.ChoicesLayer(services[0], services[1]),
     instanceId,
     objectId,
     variableId: valueJson[ShowChoicesParameterId.Variable] as number
