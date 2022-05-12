@@ -9,87 +9,52 @@
  */
 export enum ShowChoicesParameterId {
   /**
-   * Choice 1 parameter ID.
+   * Background display type.
    */
-  Choice1 = 1,
+  BackgroundDisplayType = 1,
 
   /**
-   * Choice 1 embedded parameter ID.
+   * Background image.
    */
-  Choice1Embedded = 101,
+  BackgroundImage,
 
   /**
-   * Choice 2 parameter ID.
+   * Background color.
    */
-  Choice2 = 2,
+  BackgroundColor,
 
   /**
-   * Choice 2 embedded parameter ID.
+   * Background border color.
    */
-  Choice2Embedded = 102,
+  BackgroundBorderColor,
 
   /**
-   * Choice 3 parameter ID.
+   * Highlight color.
    */
-  Choice3 = 3,
+  HighlightColor,
 
   /**
-   * Choice 3 embedded parameter ID.
+   * Font.
    */
-  Choice3Embedded = 103,
+  Font,
 
   /**
-   * Choice 4 parameter ID.
+   * Horizontal position.
    */
-  Choice4 = 4,
+  HorizontalPosition,
 
   /**
-   * Choice 4 embedded parameter ID.
+   * Vertical position.
    */
-  Choice4Embedded = 104,
+  VerticalPosition,
 
   /**
-   * Choice 5 parameter ID.
+   * Cancel setting.
    */
-  Choice5 = 5,
-
-  /**
-   * Choice 5 embedded parameter ID.
-   */
-  Choice5Embedded = 105,
-
-  /**
-   * Choice 6 parameter ID.
-   */
-  Choice6 = 6,
-
-  /**
-   * Choice 6 embedded parameter ID.
-   */
-  Choice6Embedded = 106,
-
-  /**
-   * Font parameter ID.
-   */
-  Font = 7,
-
-  /**
-   * Background parameter ID.
-   */
-  Background = 8,
-
-  /**
-   * Position parameter ID.
-   */
-  Position = 9,
+  Cancel,
 
   /**
    * Variable parameter ID.
    */
-  Variable = 10,
-
-  /**
-   * Cancel parameter ID.
-   */
-  Cancel = 11
+  Variable
 }

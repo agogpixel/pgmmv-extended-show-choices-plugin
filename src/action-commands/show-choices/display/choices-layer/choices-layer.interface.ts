@@ -1,10 +1,17 @@
-import type { AgtkConstants, CCDrawNode, CCLayer, CCSize } from '@agogpixel/pgmmv-ts/api';
+import type { AgtkConstants } from '@agogpixel/pgmmv-ts/api/agtk/constants';
+import type { CCDrawNode } from '@agogpixel/pgmmv-ts/api/cc/draw-node';
+import type { CCLayer } from '@agogpixel/pgmmv-ts/api/cc/layer';
+import type { CCSize } from '@agogpixel/pgmmv-ts/api/cc/size';
 
 import type { InputService } from '../../../../utils';
 
 import type { ShowChoicesService } from '../../service';
 
 import type { ChoicesLayerMode } from './choices-layer-mode.enum';
+
+type CommandBehaviorObject = AgtkConstants['actionCommands']['commandBehavior'];
+type CommandBehaviorKey = keyof CommandBehaviorObject;
+type CommandBehavior = CommandBehaviorObject[CommandBehaviorKey];
 
 export interface ChoicesLayer extends CCLayer {
   currentIndex: number;
@@ -29,5 +36,5 @@ export interface ChoicesLayer extends CCLayer {
    * again on the next frame); Next is returned once a choice is made and the
    * choices window has fully closed.
    */
-  update(): AgtkConstants['actionCommands']['commandBehavior'];
+  update(): CommandBehavior;
 }

@@ -1,49 +1,16 @@
-import type { CCColor, CCTexture2D } from '@agogpixel/pgmmv-ts/api';
+import type { CCColor } from '@agogpixel/pgmmv-ts/api/cc/color';
 
-import type { ChoicesServiceProtectedApi } from '../../../utils';
+import type { ChoicesServiceProtectedApi } from '../../../utils/choices/choices-service-protected-api.interface';
+
+import type { ShowChoicesBackgroundData } from '../show-choices-background-data.interface';
+import type { ShowChoicesFontData } from '../show-choices-font-data.interface';
+import type { ShowChoicesPositionData } from '../show-choices-position-data.interface';
+import type { ShowChoicesTextData } from '../show-choices-text-data.interface';
 
 export interface ShowChoicesServiceProtectedApi extends ChoicesServiceProtectedApi {
-  background: BackgroundData;
-  choice: number;
-  font: FontData;
+  background: ShowChoicesBackgroundData;
+  font: ShowChoicesFontData;
   highlightColor: CCColor;
-  position: PositionData;
-  text: TextData[];
-}
-
-interface BackgroundData {
-  borderColor?: CCColor;
-  color?: CCColor;
-  texture?: CCTexture2D;
-  type: 'graphics' | 'image' | 'none';
-}
-
-interface FontData {
-  bitmap?: {
-    fixedWidth: boolean;
-    hankakuWidth: number;
-    layoutLineList: string[];
-    letterHeight: number;
-    letterWidth: number;
-    texture: CCTexture2D;
-    zenkakuWidth: number;
-  };
-  ttf?: {
-    aliasThreshold: number;
-    filename: string;
-    letterHeight: number;
-    size: number;
-  };
-  type: 'bitmap' | 'ttf';
-}
-
-interface PositionData {
-  horizontal: 'left' | 'center' | 'right';
-  vertical: 'top' | 'center' | 'bottom';
-}
-
-interface TextData {
-  message: string;
-  font?: FontData;
-  letterSpacing: number;
+  position: ShowChoicesPositionData;
+  text: ShowChoicesTextData[];
 }

@@ -16,5 +16,10 @@ export enum ShowChoicesCancelParameterId {
   /**
    * User can't cancel the choices menu.
    */
-  Disabled = 2
+  Disabled,
+
+  /**
+   * Fallback to plugin default.
+   */
+  Default
 }

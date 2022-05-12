@@ -1,8 +1,12 @@
-import { CCNode, CCSize } from '@agogpixel/pgmmv-ts/api';
+import type { CCNode } from '@agogpixel/pgmmv-ts/api/cc/node';
+import type { CCSize } from '@agogpixel/pgmmv-ts/api/cc/size';
 
-import type { InputService } from '../../../../utils';
+import type { InputService } from '../../../../utils/input/input-service.interface';
 
-import type { ShowChoicesService } from '../../service';
+import type { ShowChoicesService } from '../../service/show-choices-service.interface';
+import { ShowChoicesBackgroundDisplayType } from '../../show-choices-background-display-type.enum';
+import { ShowChoicesHorizontalPosition } from '../../show-choices-horizontal-position.enum';
+import { ShowChoicesVerticalPosition } from '../../show-choices-vertical-position.enum';
 
 import type { ChoicesLayerClass } from './choices-layer-class.type';
 import { ChoicesLayerMode } from './choices-layer-mode.enum';
@@ -23,7 +27,7 @@ export function createChoicesLayerClass() {
 
       this.windowDimensions = new cc.Size(textDimensions.width + 16, textDimensions.height + 16);
 
-      if (showChoicesService.getBackgroundDisplayType() !== 'none') {
+      if (showChoicesService.getBackgroundDisplayType() !== ShowChoicesBackgroundDisplayType.None) {
         createWindow.call(this, 0, 0, this.windowDimensions.width, this.windowDimensions.height);
         setChildrenOpacity(this.layers.background, 0);
       }
@@ -114,7 +118,7 @@ export function createChoicesLayerClass() {
       }
 
       if (this.mode === ChoicesLayerMode.Closing) {
-        if (showChoicesService.getBackgroundDisplayType() === 'none') {
+        if (showChoicesService.getBackgroundDisplayType() === ShowChoicesBackgroundDisplayType.None) {
           this.mode = ChoicesLayerMode.End;
           this.modeCounter = 0;
         } else {
@@ -140,7 +144,7 @@ export function createChoicesLayerClass() {
 
       if (this.mode == ChoicesLayerMode.End) {
         showChoicesService.setChoice(this.currentIndex + 1);
-        //this.service.destroyChoices(true);
+        showChoicesService.destroyChoices(true);
 
         return Agtk.constants.actionCommands.commandBehavior.CommandBehaviorNext;
       }
@@ -210,7 +214,7 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
   const showChoicesService = this.showChoicesService;
 
   switch (showChoicesService.getBackgroundDisplayType()) {
-    case 'graphics':
+    case ShowChoicesBackgroundDisplayType.Graphics:
       const bgGraphics = new cc.DrawNode();
       bgGraphics.drawRect(
         cc.p(winX, winY + winHeight - 8),
@@ -221,7 +225,7 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
       );
       this.layers.background.addChild(bgGraphics);
       break;
-    case 'image':
+    case ShowChoicesBackgroundDisplayType.Image:
       // TODO: 9-slice support...
       const bgImage = new cc.Sprite(showChoicesService.getBackgroundImageTexture());
       bgImage.setAnchorPoint(0, 0);
@@ -229,7 +233,7 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
       bgImage.y = winY + winHeight - 8;
       this.layers.background.addChild(bgImage);
       break;
-    case 'none':
+    case ShowChoicesBackgroundDisplayType.None:
       break;
   }
 }
@@ -323,13 +327,13 @@ function setPosition(this: ChoicesLayer) {
   const screenSize = cc.director.getWinSize();
 
   switch (showChoicesService.getHorizontalPosition()) {
-    case 'left':
+    case ShowChoicesHorizontalPosition.Left:
       this.x = 0;
       break;
-    case 'center':
+    case ShowChoicesHorizontalPosition.Center:
       this.x = (screenSize.width - this.windowDimensions.width) / 2;
       break;
-    case 'right':
+    case ShowChoicesHorizontalPosition.Right:
       this.x = screenSize.width = this.windowDimensions.width;
       break;
     default:
@@ -337,13 +341,13 @@ function setPosition(this: ChoicesLayer) {
   }
 
   switch (showChoicesService.getVerticalPosition()) {
-    case 'top':
+    case ShowChoicesVerticalPosition.Top:
       this.y = screenSize.height;
       break;
-    case 'center':
+    case ShowChoicesVerticalPosition.Center:
       this.y = (screenSize.height - this.windowDimensions.height) / 2;
       break;
-    case 'bottom':
+    case ShowChoicesVerticalPosition.Bottom:
       this.y = this.windowDimensions.height;
       break;
     default:

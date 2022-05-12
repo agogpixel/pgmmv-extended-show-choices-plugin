@@ -1,6 +1,10 @@
-import { createChoicesService, parseTextTag, TextTagName } from '../../../utils';
+import { createChoicesService } from '../../../utils/choices/create-choices-service.function';
+import { parseTextTag } from '../../../utils/text-tag/parse-text-tag.function';
+import { TextTagName } from '../../../utils/text-tag/text-tag-name.enum';
 
-import type { ShowChoicesLetterData } from './show-choices-letter-data.interface';
+import { ShowChoicesBackgroundDisplayType } from '../show-choices-background-display-type.enum';
+import type { ShowChoicesLetterData } from '../show-choices-letter-data.interface';
+
 import type { ShowChoicesServiceConfig } from './show-choices-service-config.interface';
 import type { ShowChoicesServiceProtectedApi } from './show-choices-service-protected-api.interface';
 import type { ShowChoicesService } from './show-choices-service.interface';
@@ -16,8 +20,6 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
     type: config.backgroundDisplayType
   });
 
-  internalApi.choice = self.getNoChoiceMadeValue();
-
   internalApi.font = createFontData(config.fontId);
 
   internalApi.highlightColor = createHighlightColor();
@@ -28,6 +30,7 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
   };
 
   internalApi.text = createTextData(config.textIds, config.locale);
+  internalApi.maxChoices = internalApi.text.length;
 
   self.createTextSprites = function (choiceIndex) {
     const letterData: ShowChoicesLetterData[][] = [];
@@ -178,10 +181,6 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
     return internalApi.background.texture;
   };
 
-  self.getChoice = function () {
-    return internalApi.choice + 1;
-  };
-
   self.getHighlightColor = function () {
     return internalApi.highlightColor;
   };
@@ -194,31 +193,27 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
     return internalApi.position.vertical;
   };
 
-  self.setChoice = function (choiceIndex) {
-    internalApi.choice = choiceIndex - 1;
-  };
-
   return self;
 }
 
 function createBackgroundData(config: {
   borderColor?: [number, number, number, number];
   color?: [number, number, number, number];
-  type: 'graphics' | 'image' | 'none';
+  type: ShowChoicesBackgroundDisplayType;
   imageId?: number;
 }) {
   const backgroundData = {} as ShowChoicesServiceProtectedApi['background'];
 
   switch (config.type) {
-    case 'graphics':
+    case ShowChoicesBackgroundDisplayType.Graphics:
       const borderColor = config.borderColor || [255, 255, 255, 255];
       const color = config.color || [0, 0, 0, 128];
 
-      backgroundData.type = 'graphics';
+      backgroundData.type = ShowChoicesBackgroundDisplayType.Graphics;
       backgroundData.borderColor = new cc.Color(...borderColor);
       backgroundData.color = new cc.Color(...color);
       break;
-    case 'image':
+    case ShowChoicesBackgroundDisplayType.Image:
       if (!config.imageId) {
         // TODO: error handling...
       }
@@ -232,13 +227,13 @@ function createBackgroundData(config: {
       const texture = cc.textureCache.addImage(agtkImage.filename);
       texture.setAliasTexParameters();
 
-      backgroundData.type = 'image';
+      backgroundData.type = ShowChoicesBackgroundDisplayType.Image;
       backgroundData.texture = texture;
 
       break;
-    case 'none':
+    case ShowChoicesBackgroundDisplayType.None:
     default:
-      backgroundData.type = 'none';
+      backgroundData.type = ShowChoicesBackgroundDisplayType.None;
       break;
   }
 

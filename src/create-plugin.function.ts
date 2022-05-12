@@ -3,12 +3,12 @@
  *
  * @module
  */
-import { createPlugin as createBasePlugin } from '@agogpixel/pgmmv-plugin-support';
-import type { AgtkActionCommandPlugin, AgtkLinkConditionPlugin } from '@agogpixel/pgmmv-ts/api';
+import { createPlugin as createBasePlugin } from '@agogpixel/pgmmv-plugin-support/src/create-plugin.function';
+import type { AgtkActionCommandPlugin } from '@agogpixel/pgmmv-ts/api/agtk/plugin/action-command-plugin';
+import type { AgtkLinkConditionPlugin } from '@agogpixel/pgmmv-ts/api/agtk/plugin/link-condition-plugin';
 
 import { actionCommands, execActionCommand } from './action-commands';
-import type { ChoicesLayer } from './choices-layer';
-import { createChoicesLayerClass } from './choices-layer';
+import { createChoicesLayerClass, ShowChoicesContext } from './action-commands/show-choices';
 import type { InternalData } from './internal-data.type';
 import { execLinkCondition, linkConditions } from './link-conditions';
 import localizations from './locale';
@@ -46,12 +46,18 @@ export function createPlugin() {
   internalApi.showing = false;
 
   internalApi.destroyChoices = function (removeFromParent = true) {
-    if (internalApi.choicesLayer) {
-      if (removeFromParent) {
-        internalApi.choicesLayer.removeFromParent();
+    if (internalApi.showChoicesContext) {
+      const showChoicesContext = internalApi.showChoicesContext as Partial<ShowChoicesContext>;
+      const display = showChoicesContext.display;
+
+      if (display && removeFromParent) {
+        display.removeFromParent();
       }
 
-      internalApi.choicesLayer = undefined as unknown as ChoicesLayer;
+      delete showChoicesContext.display;
+      delete showChoicesContext.instanceId;
+      delete showChoicesContext.objectId;
+      delete showChoicesContext.variableId;
     }
 
     internalApi.showing = false;
@@ -118,7 +124,7 @@ export function createPlugin() {
    * @public
    */
   self.setParamValue = function (param) {
-    internalApi.paramValue = param;
+    internalApi.paramValue = internalApi.normalizeUiParameters(param);
   };
 
   /**
@@ -135,7 +141,13 @@ export function createPlugin() {
    * @public
    */
   self.execActionCommand = function (actionCommandIndex, parameter, objectId, instanceId) {
-    return execActionCommand(internalApi, actionCommandIndex, parameter, objectId, instanceId);
+    return execActionCommand(
+      internalApi,
+      actionCommandIndex,
+      internalApi.normalizeActionCommandParameters(actionCommandIndex, parameter),
+      objectId,
+      instanceId
+    );
   };
 
   /**
@@ -152,7 +164,13 @@ export function createPlugin() {
    * @public
    */
   self.execLinkCondition = function (linkConditionIndex, parameter, objectId, instanceId) {
-    return execLinkCondition(internalApi, linkConditionIndex, parameter, objectId, instanceId);
+    return execLinkCondition(
+      internalApi,
+      linkConditionIndex,
+      internalApi.normalizeLinkConditionParameters(linkConditionIndex, parameter),
+      objectId,
+      instanceId
+    );
   };
 
   //////////////////////////////////////////////////////////////////////////////

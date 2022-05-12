@@ -9,7 +9,7 @@
  */
 export enum ChoiceSelectedParamaterId {
   /**
-   * Condition parameter ID.
+   * Choice parameter ID.
    */
-  Condition = 1
+  Choice = 1
 }

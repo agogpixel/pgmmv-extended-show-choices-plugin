@@ -3,11 +3,11 @@
  *
  * @module
  */
-import type { PluginProtectedApi as BasePluginProtectedApi } from '@agogpixel/pgmmv-plugin-support';
-import type { AgtkPluginParameterValue } from '@agogpixel/pgmmv-ts/api';
+import type { PluginProtectedApi as BasePluginProtectedApi } from '@agogpixel/pgmmv-plugin-support/src/plugin-protected-api.interface';
+import type { JsonValue } from '@agogpixel/pgmmv-ts/api/types/json';
 
+import type { ChoicesLayerClass, ShowChoicesContext } from './action-commands/show-choices';
 import type { InternalData } from './internal-data.type';
-import type { ChoicesLayer, ChoicesLayerClass } from './choices-layer';
 
 /**
  * The plugin's internal API.
@@ -25,9 +25,9 @@ export interface PluginProtectedApi extends BasePluginProtectedApi<InternalData>
   ChoicesLayer: ChoicesLayerClass;
 
   /**
-   * Reference to the current choices layer instance.
+   * Reference to the current show choices context.
    */
-  choicesLayer: ChoicesLayer;
+  showChoicesContext: ShowChoicesContext;
 
   /**
    * Identifies our choices layer instance within Cocos. Set on plugin
@@ -37,9 +37,9 @@ export interface PluginProtectedApi extends BasePluginProtectedApi<InternalData>
 
   /**
    * References the UI parameter values set in & provided by the PGMMV editor
-   * or runtime.
+   * or runtime, and subsequently normalized with default values as needed.
    */
-  paramValue: AgtkPluginParameterValue[];
+  paramValue: Record<number, JsonValue>;
 
   /**
    * Maps concatenation of a given objectId/instanceId pair to its
