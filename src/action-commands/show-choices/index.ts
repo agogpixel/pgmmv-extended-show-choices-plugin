@@ -1,9 +1,10 @@
 /**
- * Exports 'Show Choices' action command configurations.
+ * Exports 'Show Choices' action command configurations & functions.
  *
  * @module action-commands/show-choices
  */
-export * from './show-choices-background-parameter-id.enum';
-export * from './show-choices-cancel-parameter-id.enum';
-export * from './show-choices-parameter-id.enum';
-export * from './show-choices-position-parameter-id.enum';
+export { ChoicesLayerClass, createChoicesLayerClass } from './display';
+export * from './exec-show-choices-action-command.function';
+export * from './parameters';
+export * from './show-choices-context.interface';
+export * from './show-choices.const';

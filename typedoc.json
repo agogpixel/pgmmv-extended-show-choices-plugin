@@ -1,15 +1,22 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": [
-    "./src/pgmmv-entry.ts",
-    "./src/create-plugin.function.ts",
-    "./src/action-commands",
+    "./src/action-commands/show-choices/display/choices-layer",
+    "./src/action-commands/show-choices/display",
+    "./src/action-commands/show-choices/parameters",
+    "./src/action-commands/show-choices/display",
     "./src/action-commands/show-choices",
-    "./src/choices-layer",
-    "./src/choices-layer/font-draw",
-    "./src/link-conditions",
+    "./src/action-commands",
+    "./src/create-plugin.function.ts",
     "./src/link-conditions/choice-selected",
-    "./src/parameters"
+    "./src/link-conditions",
+    "./src/internal-data.type.ts",
+    "./src/parameters",
+    "./src/plugin-protected-api.interface.ts",
+    "./src/utils/choices",
+    "./src/utils/input",
+    "./src/utils/text-tag",
+    "./src/utils"
   ],
   "out": "dist/docs"
 }
