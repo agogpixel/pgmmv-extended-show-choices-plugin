@@ -61,7 +61,7 @@ export const parameters: AgtkPluginUiParameter[] = [
     id: ParameterId.HighlightColor,
     name: 'loca(PARAMETER_HIGHLIGHT_COLOR_NAME)',
     type: AgtkPluginUiParameterType.String,
-    defaultValue: '255,255,255,255'
+    defaultValue: '0,255,255,128'
   },
   {
     id: ParameterId.Font,
