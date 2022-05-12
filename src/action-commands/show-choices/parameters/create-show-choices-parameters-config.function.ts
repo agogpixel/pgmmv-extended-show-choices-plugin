@@ -72,7 +72,7 @@ export function createShowChoicesParametersConfig(maxChoices: number, choiceIdBa
       id: ShowChoicesParameterId.HorizontalPosition,
       name: 'loca(ACTION_COMMAND_SHOW_CHOICES_PARAMETER_HORIZONTAL_POSITION_NAME)',
       type: AgtkPluginUiParameterType.CustomId,
-      defaultValue: ShowChoicesHorizontalPositionParameterId.Center,
+      defaultValue: ShowChoicesHorizontalPositionParameterId.Default,
       customParam: [
         {
           id: ShowChoicesHorizontalPositionParameterId.Left,
