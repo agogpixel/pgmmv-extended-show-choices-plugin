@@ -12,6 +12,9 @@ import type { ChoicesLayerClass } from './choices-layer-class.type';
 import { ChoicesLayerMode } from './choices-layer-mode.enum';
 import type { ChoicesLayer } from './choices-layer.interface';
 
+// TODO: Remove when done debugging...
+//import { DEBUG_LOG } from '../../../../utils/_debug-log.function';
+
 export function createChoicesLayerClass() {
   return cc.Layer.extend<ChoicesLayerClass>({
     ctor: function (this: ChoicesLayer, inputService: InputService, showChoicesService: ShowChoicesService) {
@@ -281,10 +284,16 @@ function renderChoicesText(this: ChoicesLayer, textDimensions: CCSize) {
     const choiceLines = showChoicesService.createTextSprites(i + 1);
     let choiceHeight = 0;
 
+    // TODO: remove...
+    //DEBUG_LOG(`Rendering Choice ${i + 1}`);
+
     for (let j = 0; j < choiceLines.length; ++j) {
       const letterLayer = new cc.Layer();
       letterLayer.setAnchorPoint(0, 0);
       this.layers.text.addChild(letterLayer, 1);
+
+      // TODO: remove...
+      //DEBUG_LOG(`  Rendering line ${j + 1} `);
 
       const choiceLine = choiceLines[j];
       let choiceLineMaxHeight = 0;
@@ -308,9 +317,20 @@ function renderChoicesText(this: ChoicesLayer, textDimensions: CCSize) {
       letterLayer.x = 0;
       letterLayer.y = -textDimensions.height;
 
+      // TODO: remove...
+      /*DEBUG_LOG(`  Line ${j + 1} letter layer:`, {
+        x: letterLayer.x,
+        y: letterLayer.y,
+        w: textDimensions.width,
+        h: choiceLineMaxHeight
+      });*/
+
       textDimensions.height += choiceLineMaxHeight + 8;
       choiceHeight += choiceLineMaxHeight;
     }
+
+    // TODO: remove...
+    //DEBUG_LOG(`  Choice height: ${choiceHeight}`);
 
     this.choiceHeightList.push(choiceHeight);
   }
@@ -319,6 +339,14 @@ function renderChoicesText(this: ChoicesLayer, textDimensions: CCSize) {
   this.layers.text.x = 8;
   this.layers.text.y = textDimensions.height + 8;
   this.layers.text.visible = false;
+
+  // TODO: remove...
+  /*DEBUG_LOG(`Choices text layer:`, {
+    x: this.layers.text.x,
+    y: this.layers.text.y,
+    w: this.layers.text.width,
+    h: this.layers.text.height
+  });*/
 }
 
 /**
@@ -364,11 +392,19 @@ function updateHighlightGraphics(this: ChoicesLayer) {
 
   let y = 0;
 
-  for (let i = this.choiceHeightList.length - 1; i > this.currentIndex; i--) {
+  for (let i = this.choiceHeightList.length - 1; i >= this.currentIndex; i--) {
     y += 8 + this.choiceHeightList[i];
   }
 
   this.highlightGraphics = new cc.DrawNode();
+
+  // TODO: remove...
+  /*DEBUG_LOG(`Highlight graphics rect:`, {
+    x: -4,
+    y: y - 4,
+    w: this.windowDimensions.width - 16 + 4 - -4,
+    h: y + this.choiceHeightList[this.currentIndex] + 4 - (y - 4)
+  });*/
 
   this.highlightGraphics.drawRect(
     cc.p(-4, y - 4),

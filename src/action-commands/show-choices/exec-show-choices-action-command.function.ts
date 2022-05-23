@@ -254,7 +254,7 @@ function parseCancelParameterValue(internalApi: PluginProtectedApi, valueJson: R
 function parseChoiceParameterValues(internalApi: PluginProtectedApi, valueJson: Record<number, JsonValue>) {
   const values: number[] = [];
 
-  for (let i = 0; i < maxChoices; i += 2) {
+  for (let i = 0; i < maxChoices; ++i) {
     values.push(valueJson[choiceIdBase + i + 1] as number);
   }
 

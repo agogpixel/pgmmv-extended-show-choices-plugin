@@ -160,6 +160,8 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
 
         letterData[i].push(createSprite(text[j]));
       }
+
+      letterX = 0; // Reset x position for multiline choice...
     }
 
     return letterData;
