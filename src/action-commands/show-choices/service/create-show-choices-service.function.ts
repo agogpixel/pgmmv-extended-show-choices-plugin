@@ -22,7 +22,7 @@ export function createShowChoicesService(config: ShowChoicesServiceConfig, inter
 
   internalApi.font = createFontData(config.fontId);
 
-  internalApi.highlightColor = createHighlightColor();
+  internalApi.highlightColor = createHighlightColor(config.highlightColor);
 
   internalApi.position = {
     horizontal: config.horizontalPosition,
@@ -212,8 +212,8 @@ function createBackgroundData(config: {
       const color = config.color || [0, 0, 0, 128];
 
       backgroundData.type = ShowChoicesBackgroundDisplayType.Graphics;
-      backgroundData.borderColor = new cc.Color(...borderColor);
-      backgroundData.color = new cc.Color(...color);
+      backgroundData.borderColor = new cc.Color(borderColor[0], borderColor[1], borderColor[2], borderColor[3]);
+      backgroundData.color = new cc.Color(color[0], color[1], color[2], color[3]);
       break;
     case ShowChoicesBackgroundDisplayType.Image:
       if (!config.imageId) {
@@ -299,8 +299,8 @@ function createFontData(fontId: number) {
   return fontData;
 }
 
-function createHighlightColor(color?: [number, number, number, number]) {
-  return new cc.Color(...(color || [0, 255, 255, 128]));
+function createHighlightColor(color: [number, number, number, number] = [0, 255, 255, 128]) {
+  return new cc.Color(color[0], color[1], color[2], color[3]);
 }
 
 function createTextData(textIds: number[], locale: string) {
