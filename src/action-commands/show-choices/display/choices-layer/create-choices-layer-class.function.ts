@@ -12,6 +12,8 @@ import type { ChoicesLayerClass } from './choices-layer-class.type';
 import { ChoicesLayerMode } from './choices-layer-mode.enum';
 import type { ChoicesLayer } from './choices-layer.interface';
 
+const MARGIN = 0; // 8;
+
 export function createChoicesLayerClass() {
   return cc.Layer.extend<ChoicesLayerClass>({
     ctor: function (this: ChoicesLayer, inputService: InputService, showChoicesService: ShowChoicesService) {
@@ -27,7 +29,10 @@ export function createChoicesLayerClass() {
       const textDimensions = cc.size(0, 0);
       renderChoicesText.call(this, textDimensions);
 
-      this.windowDimensions = cc.size(textDimensions.width + 16, textDimensions.height + 16);
+      this.windowDimensions = cc.size(
+        textDimensions.width + 2 * MARGIN /*16*/,
+        textDimensions.height + 2 * MARGIN /*16*/
+      );
 
       if (showChoicesService.getBackgroundDisplayType() !== ShowChoicesBackgroundDisplayType.None) {
         createWindow.call(this, 0, 0, this.windowDimensions.width, this.windowDimensions.height);
@@ -183,12 +188,12 @@ function createLayers(this: ChoicesLayer) {
   const background = new cc.Layer();
 
   const highlight = new cc.Layer();
-  highlight.x = 8;
-  highlight.y = 8;
+  highlight.x = MARGIN; // 8;
+  highlight.y = MARGIN; // 8;
 
   const text = new cc.Layer();
-  text.x = 8;
-  text.y = 8;
+  text.x = MARGIN; // 8;
+  text.y = MARGIN; // 8;
 
   this.layers = {
     background,
@@ -215,10 +220,10 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
     case ShowChoicesBackgroundDisplayType.Graphics:
       const bgGraphics = new cc.DrawNode();
       bgGraphics.drawRect(
-        cc.p(winX, winY + winHeight - 8),
-        cc.p(winX + winWidth - 8, winY),
+        cc.p(winX, winY + winHeight - MARGIN /*8*/),
+        cc.p(winX + winWidth - MARGIN /*8*/, winY),
         showChoicesService.getBackgroundColor() || null,
-        8,
+        1,
         showChoicesService.getBackgroundBorderColor()
       );
       this.layers.background.addChild(bgGraphics);
@@ -228,7 +233,7 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
       const bgImage = new cc.Sprite(showChoicesService.getBackgroundImageTexture());
       bgImage.setAnchorPoint(0, 0);
       bgImage.x = winX;
-      bgImage.y = winY + winHeight - 8;
+      bgImage.y = winY + winHeight - MARGIN; // 8;
       this.layers.background.addChild(bgImage);
       break;
     case ShowChoicesBackgroundDisplayType.None:
@@ -248,18 +253,18 @@ function getClickedIndex(this: ChoicesLayer) {
   const x = Agtk.variables.get(Agtk.variables.MouseXId).getValue();
   const y = screenSize.height - 1 - Agtk.variables.get(Agtk.variables.MouseYId).getValue();
 
-  if (x < this.x + 4 || x >= this.x + this.windowDimensions.width - 4) {
+  if (x < this.x + MARGIN / 2 || x >= this.x + this.windowDimensions.width - MARGIN / 2) {
     return -1;
   }
 
-  let iy = this.y + 8;
+  let iy = this.y + MARGIN;
 
   for (let i = this.choiceHeightList.length - 1; i >= 0; i--) {
-    if (y >= iy - 4 && y < iy + this.choiceHeightList[i] + 4) {
+    if (y >= iy - MARGIN / 2 && y < iy + this.choiceHeightList[i] + MARGIN / 2) {
       return i;
     }
 
-    iy += 8 + this.choiceHeightList[i];
+    iy += MARGIN + this.choiceHeightList[i];
   }
 
   return -1;
@@ -302,18 +307,18 @@ function renderChoicesText(this: ChoicesLayer, textDimensions: CCSize) {
       }
 
       letterLayer.x = 0;
-      letterLayer.y = -textDimensions.height;
+      letterLayer.y = -textDimensions.height - 2 * choiceLineMaxHeight;
 
-      textDimensions.height += choiceLineMaxHeight + 8;
+      textDimensions.height += choiceLineMaxHeight + MARGIN;
       choiceHeight += choiceLineMaxHeight;
     }
 
     this.choiceHeightList.push(choiceHeight);
   }
 
-  textDimensions.height -= 8;
-  this.layers.text.x = 8;
-  this.layers.text.y = textDimensions.height + 8;
+  textDimensions.height -= MARGIN;
+  this.layers.text.x = MARGIN;
+  this.layers.text.y = textDimensions.height + MARGIN;
   this.layers.text.visible = false;
 }
 
@@ -360,23 +365,15 @@ function updateHighlightGraphics(this: ChoicesLayer) {
 
   let y = 0;
 
-  for (let i = this.choiceHeightList.length - 1; i >= this.currentIndex; i--) {
-    y += 8 + this.choiceHeightList[i];
+  for (let i = this.choiceHeightList.length - 1; i > this.currentIndex; i--) {
+    y += MARGIN + this.choiceHeightList[i];
   }
 
   this.highlightGraphics = new cc.DrawNode();
 
-  // TODO: remove...
-  /*DEBUG_LOG(`Highlight graphics rect:`, {
-    x: -4,
-    y: y - 4,
-    w: this.windowDimensions.width - 16 + 4 - -4,
-    h: y + this.choiceHeightList[this.currentIndex] + 4 - (y - 4)
-  });*/
-
   this.highlightGraphics.drawRect(
-    cc.p(-4, y - 4),
-    cc.p(this.windowDimensions.width - 16 + 4, y + this.choiceHeightList[this.currentIndex] + 4),
+    cc.p(-(MARGIN / 2), y - MARGIN / 2),
+    cc.p(this.windowDimensions.width - (3 * MARGIN) / 2, y + this.choiceHeightList[this.currentIndex] + MARGIN / 2),
     this.showChoicesService.getHighlightColor(),
     0,
     cc.color(0, 0, 0, 0)
