@@ -230,10 +230,21 @@ function createWindow(this: ChoicesLayer, winX: number, winY: number, winWidth: 
       break;
     case ShowChoicesBackgroundDisplayType.Image:
       // TODO: 9-slice support...
-      const bgImage = new cc.Sprite(showChoicesService.getBackgroundImageTexture());
+      const bgImageTexture = showChoicesService.getBackgroundImageTexture();
+      if (!bgImageTexture) {
+        // TODO: handle error...
+        return;
+      }
+      const bgImageFrame = new cc.SpriteFrame(
+        bgImageTexture,
+        cc.rect(0, 0, bgImageTexture.width, bgImageTexture.height)
+      );
+      //const bgImage = new cc.Scale9Sprite(bgImageFrame, cc.rect(4, 8, 92, 84));
+      const bgImage = new cc.Scale9Sprite(bgImageFrame);
       bgImage.setAnchorPoint(0, 0);
       bgImage.x = winX;
-      bgImage.y = winY + winHeight - MARGIN; // 8;
+      bgImage.y = winY; // + winHeight - MARGIN; // 8;
+      bgImage.setContentSize(winWidth - MARGIN /*8*/, winHeight - MARGIN /*8*/);
       this.layers.background.addChild(bgImage);
       break;
     case ShowChoicesBackgroundDisplayType.None:
